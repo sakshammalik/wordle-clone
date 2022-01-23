@@ -4,9 +4,12 @@
   --primaryColor: #121213;
   --secondaryColor: #565758;
   --white: white;
-  --max-width: 500px;
-  --key-bg: #808384;
-  --inactive-tile: #3a3a3c;
+  --maxWidth: 500px;
+  --keyBg: #808384;
+  --inactiveTile: #3a3a3c;
+  --activeTile: #565758;
+  --wrongColor: #b59f3a;
+  --correctColor: #538d4e;
   font-family: 'Lato', sans-serif;
 }
 
@@ -37,7 +40,7 @@ body {
 }
 
 .container {
-  max-width: var(--max-width);
+  max-width: var(--maxWidth);
 }
 
 .header {
@@ -59,7 +62,7 @@ body {
   position: fixed;
   bottom: 0;
   height: 200px;
-  width: var(--max-width);
+  width: var(--maxWidth);
   gap: 6px;
   padding: 0 13px;
 }
@@ -73,10 +76,31 @@ body {
 .keyboard-key {
   min-width: 42px;
   height: 58px;
-  background-color: var(--key-bg);
+  background-color: var(--keyBg);
   border: none;
   border-radius: 4px;
   color: var(--white);
+  cursor: pointer;
+  user-select: none;
+}
+
+.keyboard-key.absent {
+  background-color: var(--inactiveTile);
+}
+.keyboard-key.present {
+  background-color: var(--wrongColor);
+}
+.keyboard-key.correct {
+  background-color: var(--correctColor);
+}
+
+.keyboard-key:focus-visible {
+  outline: none;
+}
+
+.grid-container {
+  display: flex;
+  justify-content: center;
 }
 
 .square-grid {
@@ -95,5 +119,53 @@ body {
 .square-grid-element {
   height: 62px;
   width: 62px;
-  border: 1px solid var(--inactive-tile);
+  border: 2px solid var(--inactiveTile);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  transform-style: preserve-3d;
+  user-select: none;
+}
+
+.square-grid-element.active {
+  border-color: var(--activeTile);
+  animation: popout 100ms ease;
+  transition: transform 0.4s;
+  transform: rotateX(0deg);
+  z-index: 2;
+}
+
+.square-grid-element.active.absent {
+  background-color: var(--inactiveTile);
+  border-color: var(--inactiveTile);
+}
+.square-grid-element.active.present {
+  background-color: var(--wrongColor);
+  border-color: var(--wrongColor);
+}
+.square-grid-element.active.correct {
+  background-color: var(--correctColor);
+  border-color: var(--correctColor);
+}
+
+
+@keyframes popout {
+    from{
+      transform:scale(0.8);
+      border-color: var(--inactiveTile);
+      opacity: 0;
+    }
+    80%{
+      transform:scale(1.1);
+      border-color: var(--activeTile);
+      opacity: 0.8;
+    }
+    to{
+      transform:scale(1);
+      border-color: var(--activeTile);
+      opacity: 1;
+    }
 }

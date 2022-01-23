@@ -1,22 +1,15 @@
 import React from "react";
 import SquareGridElement from "./SquareGridElement";
 
-const GRID = [
-
-]; 
-
-
-const SquareGrid = () => {
-
-    const [grid, setGrid] = React.useState();
+const SquareGrid = ({ grid, error }) => {
 
     return (
       <div className="grid-container">
         <div className="square-grid">
-          {[0, 1, 2, 3, 4, 5].map(() => (
-            <div className="square-grid-row">
-              {[0, 1, 2, 3, 4].map(() => (
-                <SquareGridElement />
+          {Object.keys(grid).map((i) => (
+            <div className="square-grid-row" key={i + 'grid'}>
+              {[0, 1, 2, 3, 4].map((j, index) => (
+                <SquareGridElement key={j + 'key'} element={grid[i][j]} error={error[i][j]} />
               ))}
             </div>
           ))}

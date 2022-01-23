@@ -6,6 +6,7 @@
   --white: white;
   --max-width: 500px;
   --key-bg: #808384;
+  --inactive-tile: #3a3a3c;
   font-family: 'Lato', sans-serif;
 }
 
@@ -79,6 +80,20 @@ body {
 }
 
 .square-grid {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.square-grid-row {
   display: flex;
-  flex: 1;
+  gap: 6px;
+}
+
+.square-grid-element {
+  height: 62px;
+  width: 62px;
+  border: 1px solid var(--inactive-tile);
 }

@@ -116,6 +116,11 @@ body {
   gap: 6px;
 }
 
+.square-grid-row.invalid {
+  animation-name: Shake;
+  animation-duration: 600ms;
+}
+
 .square-grid-element {
   height: 62px;
   width: 62px;
@@ -190,4 +195,27 @@ body {
       border-color: var(--activeTile);
       opacity: 1;
     }
+}
+
+@keyframes Shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
 }

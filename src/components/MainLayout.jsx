@@ -28,6 +28,7 @@ const MainLayout = () => {
     const [numberOfTry, setNumberOfTry] = React.useState(1);
     const [isWon, setIsWon] = React.useState(false);
     const [keyboardErrorState, setKeyboardErrorState] = React.useState({});
+    const [invalidWord, setInvalidWord] = React.useState(false);
 
     const getWordsList = async () => {
         const resp = await fetch(
@@ -100,6 +101,10 @@ const MainLayout = () => {
             setKeyboardErrorState(keyboardError);
             return;
         }
+        setInvalidWord(true);
+        setTimeout(() => {
+            setInvalidWord(false);
+        }, 1000);
         console.log('not a word bro')
         
     }, [error, keyboardErrorState, numberOfTry, solution, wordList]);
@@ -201,7 +206,12 @@ const MainLayout = () => {
       <div className="main">
         <div className="container">
           <Header />
-          <SquareGrid grid={grid} error={error} />
+          <SquareGrid
+            grid={grid}
+            error={error}
+            invalidWord={invalidWord}
+            numberOfTry={numberOfTry}
+          />
           <GameControls
             isWon={isWon}
             status={gameStatus}

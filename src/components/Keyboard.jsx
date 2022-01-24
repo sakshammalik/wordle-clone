@@ -146,7 +146,7 @@ const Keyboard = ({ onClick, grid, error }) => {
     },
     {
       name: "backspace",
-      render: <img src="/backspace.svg" alt="backspace" />,
+      render: <img src="./backspace.svg" alt="backspace" />,
       code: 8,
     },
   ];

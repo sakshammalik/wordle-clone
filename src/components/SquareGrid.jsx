@@ -3,6 +3,8 @@ import SquareGridElement from "./SquareGridElement";
 
 const SquareGrid = ({ grid, error }) => {
 
+    console.log(error);
+
     return (
       <div className="grid-container">
         <div className="square-grid">

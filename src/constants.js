@@ -34,3 +34,7 @@ export const LETTER_STATES = {
   correct: "correct",
   present: "present",
 };
+export const GAME_STATUS = {
+  inProgress: "inProgress",
+  completed: "completed",
+};

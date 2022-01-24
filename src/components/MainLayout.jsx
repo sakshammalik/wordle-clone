@@ -1,11 +1,13 @@
 import React from "react";
-import { ALLOWED_KEYS, LETTER_STATES } from "../constants";
+import { ALLOWED_KEYS, GAME_STATUS, LETTER_STATES } from "../constants";
+import GameControls from "./GameControls";
 import Header from "./Header";
 import Keyboard from "./Keyboard";
 import SquareGrid from "./SquareGrid";
 
 const MainLayout = () => {
-    const [solution, setSolution] = React.useState('');
+    const [solution, setSolution] = React.useState("");
+    const [gameStatus, setGameStatus] = React.useState(GAME_STATUS.inProgress);
     const [wordList, setWordList] = React.useState([]);
     const [grid, setGrid] = React.useState({
       1: [],
@@ -37,9 +39,7 @@ const MainLayout = () => {
         if (sol) {
             setSolution(sol);
         } else {
-            const randomWord = arr[Math.floor(Math.random() * arr.length)];
-            setSolution(randomWord)
-            localStorage.setItem('solution', randomWord);
+            getRandomWord(arr)
         }
         setWordList(arr);
     };
@@ -47,7 +47,23 @@ const MainLayout = () => {
 
     React.useEffect(() => {
         getWordsList();
+        const grid = localStorage.getItem("grid");
+        const error = localStorage.getItem("error");
+        const not = localStorage.getItem("numberOfTry");
+        const kError = localStorage.getItem("kError");
+        if (grid) setGrid(JSON.parse(grid));
+        if (error) setError(JSON.parse(error));
+        not ? setNumberOfTry(+not) : localStorage.setItem("numberOfTry", numberOfTry);
+        if (kError) setKeyboardErrorState(JSON.parse(kError));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (numberOfTry > 6) {
+            setGameStatus(GAME_STATUS.completed);
+            setIsWon(false);
+        }
+    }, [numberOfTry]);
 
     const checkWord = React.useCallback((wordArr) => {
         const word = wordArr.join('');
@@ -71,6 +87,12 @@ const MainLayout = () => {
             }
             if (solution === word) {
                 setIsWon(true);
+                setGameStatus(GAME_STATUS.completed)
+                localStorage.clear();
+            } else {
+                localStorage.setItem("error", JSON.stringify(tempErr));
+                localStorage.setItem("numberOfTry", numberOfTry + 1);
+                localStorage.setItem("kError", JSON.stringify(keyboardError));
             }
             tempErr[numberOfTry] = tempVal;
             setError(tempErr);
@@ -84,7 +106,7 @@ const MainLayout = () => {
 
     const onClick = React.useCallback((itemPressed) => {
         const item = itemPressed.toLowerCase();
-        if (!ALLOWED_KEYS.includes(item) || isWon) {
+        if (!ALLOWED_KEYS.includes(item) || isWon || gameStatus === GAME_STATUS.completed) {
             return;
         }
         const temp = { ...grid };
@@ -113,7 +135,8 @@ const MainLayout = () => {
         }
         temp[numberOfTry] = value;
         setGrid(temp);
-    }, [checkWord, grid, isWon, numberOfTry]);
+        localStorage.setItem('grid', JSON.stringify(temp));
+    }, [checkWord, gameStatus, grid, isWon, numberOfTry]);
 
     const handleClickEvent = React.useCallback(
       (e) => {
@@ -132,16 +155,60 @@ const MainLayout = () => {
       };
     }, [handleClickEvent, isWon]);
 
+    const getRandomWord = (arr) => {
+        const randomWord = arr[Math.floor(Math.random() * arr.length)];
+        setSolution(randomWord);
+        localStorage.setItem("solution", randomWord);
+    };
+
+    const resetGameState = () => {
+        const initGrid = {
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+          5: [],
+          6: [],
+        };
+        const initError = {
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+          5: [],
+          6: [],
+        };
+        setGrid(initGrid);
+        setError(initError);
+        setNumberOfTry(1);
+        setKeyboardErrorState({});
+        setGameStatus(GAME_STATUS.inProgress);
+        localStorage.setItem("grid", JSON.stringify(initGrid));
+        localStorage.setItem("error", JSON.stringify(initError));
+        localStorage.setItem("numberOfTry", 1);
+        localStorage.setItem("kError", JSON.stringify({}));
+    };
+
+    const retry = () => {
+        resetGameState();
+    };
+
+    const newGame = () => {
+        window.location.reload();
+    };
+
     return (
       <div className="main">
         <div className="container">
           <Header />
           <SquareGrid grid={grid} error={error} />
-          <Keyboard
-            onClick={onClick}
-            grid={grid}
-            error={keyboardErrorState}
+          <GameControls
+            isWon={isWon}
+            status={gameStatus}
+            retry={retry}
+            newGame={newGame}
           />
+          <Keyboard onClick={onClick} grid={grid} error={keyboardErrorState} />
         </div>
       </div>
     );

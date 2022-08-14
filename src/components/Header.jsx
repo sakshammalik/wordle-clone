@@ -1,17 +1,21 @@
 const Header = () => {
     return (
       <header>
-        <div className="header">
+        {/* <div className="header"> */}
           <div>
-            <img src="./help.svg" alt="help" />
+            <img src="/wordle-clone/images/help.svg" alt="help" />
+          </div>
+          <div className="header-title">
+            WORDLE
           </div>
           <div>
-            <span>WORDLE</span>
+            <img
+              src="/wordle-clone/images/settings.svg"
+              alt="settings"
+              width="24px"
+            />
           </div>
-          <div>
-            <img src="./settings.svg" alt="settings" width="24px" />
-          </div>
-        </div>
+        {/* </div> */}
       </header>
     );
 };

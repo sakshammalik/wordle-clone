@@ -70,7 +70,6 @@ const MainLayout = () => {
         const word = wordArr.join('');
         const solArr = solution.split('');
         if (wordList.includes(word)) {
-            console.log('awesome working');
             const tempErr = { ...error };
             const tempVal = tempErr[numberOfTry];
             const keyboardError = { ...keyboardErrorState };
@@ -105,8 +104,6 @@ const MainLayout = () => {
         setTimeout(() => {
             setInvalidWord(false);
         }, 1000);
-        console.log('not a word bro')
-        
     }, [error, keyboardErrorState, numberOfTry, solution, wordList]);
 
     const onClick = React.useCallback((itemPressed) => {
@@ -203,9 +200,10 @@ const MainLayout = () => {
     };
 
     return (
-      <div className="main">
+      // <div className="main">
+      <>
+        <Header />
         <div className="container">
-          <Header />
           <SquareGrid
             grid={grid}
             error={error}
@@ -220,7 +218,8 @@ const MainLayout = () => {
           />
           <Keyboard onClick={onClick} grid={grid} error={keyboardErrorState} />
         </div>
-      </div>
+        </>
+      // </div>
     );
 };
 

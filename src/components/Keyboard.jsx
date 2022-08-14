@@ -146,7 +146,7 @@ const Keyboard = ({ onClick, grid, error }) => {
     },
     {
       name: "backspace",
-      render: <img src="./backspace.svg" alt="backspace" />,
+      render: <img src="/wordle-clone/images/backspace.svg" alt="backspace" />,
       code: 8,
     },
   ];
@@ -164,6 +164,7 @@ const Keyboard = ({ onClick, grid, error }) => {
         ))}
       </div>
       <div className="keyboard-row">
+        <div className="spacer"></div>
         {SECOND_ROW.map((key) => (
           <KeyboardKey
             item={key}
@@ -172,6 +173,7 @@ const Keyboard = ({ onClick, grid, error }) => {
             error={error[key.name]}
           />
         ))}
+        <div className="spacer"></div>
       </div>
       <div className="keyboard-row">
         {THIRD_ROW.map((key) => (
